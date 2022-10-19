@@ -1,6 +1,11 @@
 <template>
 <div v-if="asyncDataStatus_ready" class="col-full">
   <div v-if="forum" class="col-full push-top">
+    <AppHead>
+      <title>{{forum?.name}}</title>
+      <meta property="og:title" :content="forum?.name">
+      <meta name="twitter:title" :content="forum?.name">
+    </AppHead>
     <div class="forum-header">
       <div class="forum-details">
         <h1>{{ forum.name }}</h1>
@@ -21,7 +26,6 @@
     v-model="page"
     :pages="totalPages"
     active-color="#57AD8D"
-    @update:modelValue="updateHandler"
   />
   </div>
 </div>
@@ -58,7 +62,7 @@ export default {
         .map(thread => this.$store.getters['threads/thread'](thread.id))
     },
     threadCount () {
-      return this.forum.threads.length
+      return this.forum.threads?.length || 0
     },
     totalPages () {
       if (!this.threadCount) return 0
